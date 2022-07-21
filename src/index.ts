@@ -23,9 +23,22 @@ const runRedeliveryPath = async () => {
   console.log('--- END REDELIVERY-PATH ---\n')
 }
 
+const runInvalidTransition = async () => {
+  console.log('--- START INVALID-TRANSITION-PATH ---')
+  try {
+    const stateMachine = makeOrderOutStateManager(OrderOutEvent.OrderOutCreated)
+    await stateMachine.handler(OrderOutEvent.OrderShipmentDelivered)
+  } catch (error: any) {
+    console.log(error.message)
+  }
+
+  console.log('--- END INVALID-TRANSITION-PATH ---\n')
+}
+
 const run = async () => {
   await runHappyPath()
   await runRedeliveryPath()
+  await runInvalidTransition()
 }
 
 run()
