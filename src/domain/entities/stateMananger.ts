@@ -1,11 +1,12 @@
 import { TypeState } from 'typestate'
+import { SaveOrderStatus } from '../repo/orderRepository'
 import { Event } from './event'
 import { Status } from './status'
 
-export class OrderStateMananger {
+export class StateMananger {
   private stateMachine: TypeState.FiniteStateMachine<Event>
 
-  constructor (initState?: Event) {
+  constructor (protected readonly repo: SaveOrderStatus, initState?: Event) {
     this.stateMachine = new TypeState.FiniteStateMachine<Event>(initState || Event.OrderOutCreated)
     this.stateMachine.from(Event.OrderOutCreated).to(Event.OrderPaymentApproved, Event.OrderPaymentRejected, Event.OrderPaymentExpired)
     this.stateMachine.from(Event.OrderPaymentApproved).to(Event.OrderOutRegisterCreated, Event.OrderOutRegisterRejected)
@@ -15,7 +16,10 @@ export class OrderStateMananger {
 
     Object.keys(Event).forEach((item: string) => {
       const to = Event[item as keyof typeof Event]
-      this.stateMachine.on(to, (from) => console.log(`Order changed from [${from}] to [${to}]. Status: [${this.getStatus()}]`))
+      this.stateMachine.on(to, (from) => {
+        console.log(`Order changed from [${from}] to [${to}]. Status: [${this.getStatus()}]`)
+        this.repo.saveStatus({ id: 1, event: to, status: this.getStatus() })
+      })
     })
 
     this.stateMachine.onInvalidTransition((from?: Event, to?: Event) => {
