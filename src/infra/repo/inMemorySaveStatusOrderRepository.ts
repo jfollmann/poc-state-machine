@@ -1,8 +1,8 @@
 import { SaveOrderStatus } from '../../domain/repo/orderRepository'
 
-export class InMemoryOrderRepository implements SaveOrderStatus {
+export class InMemorySaveStatusOrderRepository implements SaveOrderStatus {
   saveStatus (input: SaveOrderStatus.Input): Promise<boolean> {
-    console.log('- InMemoryOrderRepositoryMessage', input)
+    console.log('[Repo Info]', input)
     return Promise.resolve(true)
   }
 }

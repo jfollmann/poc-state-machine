@@ -1,13 +1,18 @@
 import { Event, StateMananger } from './domain/entities'
-import { InMemoryOrderRepository } from './infra/repo/inMemoryOrderRepository'
+import { InMemorySaveStatusOrderRepository } from './infra/repo/inMemorySaveStatusOrderRepository'
 
 const write = (stateMachine: StateMananger) => console.log(`CurrentEvent: ${stateMachine.currentEvent()} | CurrentStatus: ${stateMachine.getStatus()}`)
 
-const makeOrderRepository = (): InMemoryOrderRepository => new InMemoryOrderRepository()
+const makeOrderRepository = (): InMemorySaveStatusOrderRepository => new InMemorySaveStatusOrderRepository()
 
-const runHappyPath = (repo: InMemoryOrderRepository) => {
+const makeStateManager = (initState?: Event): StateMananger => {
+  const repo = makeOrderRepository()
+  return new StateMananger(repo, initState)
+}
+
+const runHappyPath = () => {
   console.log('--- START HAPPY-PATH ---')
-  const stateMachine = new StateMananger(repo)
+  const stateMachine = makeStateManager()
   stateMachine.go(Event.OrderPaymentApproved)
   stateMachine.go(Event.OrderOutRegisterCreated)
   stateMachine.go(Event.OrderShipped)
@@ -18,26 +23,24 @@ const runHappyPath = (repo: InMemoryOrderRepository) => {
   console.log('--- END HAPPY-PATH ---\n')
 }
 
-// const runErrorPaymentExpired = (repo: InMemoryOrderRepository) => {
-//   console.log('--- START ERROR-ON-PAYMENT-EXPIRED ---')
-//   const stateMachine = new OrderStateMananger(repo)
-//   stateMachine.go(Event.OrderPaymentExpired)
+const runErrorPaymentExpired = () => {
+  console.log('--- START ERROR-ON-PAYMENT-EXPIRED ---')
+  const stateMachine = makeStateManager()
+  stateMachine.go(Event.OrderPaymentExpired)
 
-//   write(stateMachine)
-//   console.log('--- END ERROR-ON-PAYMENT-EXPIRED ---\n')
-// }
+  write(stateMachine)
+  console.log('--- END ERROR-ON-PAYMENT-EXPIRED ---\n')
+}
 
-// const runErrorPaymentRejected = (repo: InMemoryOrderRepository) => {
-//   console.log('--- START ERROR-ON-PAYMENT-REJECTED ---')
-//   const stateMachine = new OrderStateMananger(repo)
-//   stateMachine.go(Event.OrderPaymentRejected)
+const runErrorPaymentRejected = () => {
+  console.log('--- START ERROR-ON-PAYMENT-REJECTED ---')
+  const stateMachine = makeStateManager()
+  stateMachine.go(Event.OrderPaymentRejected)
 
-//   write(stateMachine)
-//   console.log('--- END ERROR-ON-PAYMENT-REJECTED ---\n')
-// }
+  write(stateMachine)
+  console.log('--- END ERROR-ON-PAYMENT-REJECTED ---\n')
+}
 
-const repo = makeOrderRepository()
-
-runHappyPath(repo)
-// runErrorPaymentExpired()
-// runErrorPaymentRejected()
+runHappyPath()
+runErrorPaymentExpired()
+runErrorPaymentRejected()
