@@ -25,9 +25,9 @@ export class OrderStateMananger {
     })
   }
 
-  goTo = (state: Event, event?: any): void => this.stateMachine.go(state, event)
+  go = (state: Event, event?: any): void => this.stateMachine.go(state, event)
 
-  canGoTo = (state: Event) => this.stateMachine.canGo(state)
+  canGo = (state: Event) => this.stateMachine.canGo(state)
 
   currentEvent = () => this.stateMachine.currentState
 
