@@ -1,46 +1,31 @@
-import { Event, StateMananger } from './domain/entities'
-import { InMemorySaveStatusOrderRepository } from './infra/repo/inMemorySaveStatusOrderRepository'
+import { makeOrderOutStateManager } from './main/factories'
+import { OrderOutEvent } from './domain/entities'
 
-const write = (stateMachine: StateMananger) => console.log(`CurrentEvent: ${stateMachine.currentEvent()} | CurrentStatus: ${stateMachine.getStatus()}`)
-
-const makeOrderRepository = (): InMemorySaveStatusOrderRepository => new InMemorySaveStatusOrderRepository()
-
-const makeStateManager = (initState?: Event): StateMananger => {
-  const repo = makeOrderRepository()
-  return new StateMananger(repo, initState)
-}
-
-const runHappyPath = () => {
+const runHappyPath = async () => {
   console.log('--- START HAPPY-PATH ---')
-  const stateMachine = makeStateManager()
-  stateMachine.go(Event.OrderPaymentApproved)
-  stateMachine.go(Event.OrderOutRegisterCreated)
-  stateMachine.go(Event.OrderShipped)
-  stateMachine.go(Event.OrderOutRegisterUpdated)
-  stateMachine.go(Event.OrderShipmentDelivered)
+  const stateMachine = makeOrderOutStateManager()
+  await stateMachine.handler(OrderOutEvent.OrderPaymentApproved)
+  await stateMachine.handler(OrderOutEvent.OrderOutRegisterCreated)
+  await stateMachine.handler(OrderOutEvent.OrderShipped)
+  await stateMachine.handler(OrderOutEvent.OrderOutRegisterUpdated)
+  await stateMachine.handler(OrderOutEvent.OrderShipmentDelivered)
 
-  write(stateMachine)
   console.log('--- END HAPPY-PATH ---\n')
 }
 
-const runErrorPaymentExpired = () => {
-  console.log('--- START ERROR-ON-PAYMENT-EXPIRED ---')
-  const stateMachine = makeStateManager()
-  stateMachine.go(Event.OrderPaymentExpired)
+const runRedeliveryPath = async () => {
+  console.log('--- START REDELIVERY-PATH ---')
+  const stateMachine = makeOrderOutStateManager(OrderOutEvent.OrderOutRegisterCreated)
+  await stateMachine.handler(OrderOutEvent.OrderShipped)
+  await stateMachine.handler(OrderOutEvent.OrderOutRegisterUpdated)
+  await stateMachine.handler(OrderOutEvent.OrderShipmentDelivered)
 
-  write(stateMachine)
-  console.log('--- END ERROR-ON-PAYMENT-EXPIRED ---\n')
+  console.log('--- END REDELIVERY-PATH ---\n')
 }
 
-const runErrorPaymentRejected = () => {
-  console.log('--- START ERROR-ON-PAYMENT-REJECTED ---')
-  const stateMachine = makeStateManager()
-  stateMachine.go(Event.OrderPaymentRejected)
-
-  write(stateMachine)
-  console.log('--- END ERROR-ON-PAYMENT-REJECTED ---\n')
+const run = async () => {
+  await runHappyPath()
+  await runRedeliveryPath()
 }
 
-runHappyPath()
-runErrorPaymentExpired()
-runErrorPaymentRejected()
+run()

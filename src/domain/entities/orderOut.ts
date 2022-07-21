@@ -1,5 +1,17 @@
 /* eslint-disable no-unused-vars */
-export enum Event {
+export enum OrderOutStatus {
+  OrderOutWaitingPayment = 'Aguardando Pagamento',
+  OrderOutValidatingPayment = 'Validando Pagamento',
+  OrderOutSending = 'Enviando',
+  OrderOutCompleted = 'Concluída',
+  OrderOutReturnedAvailable = 'Devolvida (Disponível)',
+  OrderOutReturnedInProgress = 'Devolvida (Em andamento)',
+  OrderOutReturnedCompleted = 'Devolvida (Concluída)',
+  OrderOutCanceled = 'Cancelada',
+}
+
+/* eslint-disable no-unused-vars */
+export enum OrderOutEvent {
   OrderOutCreated = 'ORDER_OUT_CREATED',
   OrderPaymentApproved = 'ORDER_OUT_PAYMENT_APPROVED',
   OrderPaymentRejected = 'ORDER_OUT_PAYMENT_REJECTED',
