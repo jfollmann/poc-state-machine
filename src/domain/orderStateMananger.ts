@@ -14,8 +14,8 @@ export class OrderStateMananger {
     this.stateMachine.from(Event.OrderOutRegisterUpdated).to(Event.OrderShipmentDelivered, Event.OrderShipmentCancelled)
 
     Object.keys(Event).forEach((item: string) => {
-      const event = Event[item as keyof typeof Event]
-      this.stateMachine.on(event, (from) => this.writeLog(from, event))
+      const to = Event[item as keyof typeof Event]
+      this.stateMachine.on(to, (from) => console.log(`Order changed from [${from}] to [${to}]. Status: [${this.getStatus()}]`))
     })
 
     this.stateMachine.onInvalidTransition((from?: Event, to?: Event) => {
@@ -24,8 +24,6 @@ export class OrderStateMananger {
       return true
     })
   }
-
-  writeLog = (from?: Event, to?: Event) => console.log(`Order changed from [${from}] to [${to}]. State: [${this.getStatus()}]`)
 
   goTo = (state: Event, event?: any): void => this.stateMachine.go(state, event)
 

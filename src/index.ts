@@ -1,5 +1,7 @@
 import { Event, OrderStateMananger } from './domain'
 
+const write = (stateMachine: OrderStateMananger) => console.log(`CurrentEvent: ${stateMachine.currentEvent()} | CurrentStatus: ${stateMachine.getStatus()}`)
+
 const runHappyPath = () => {
   console.log('--- START HAPPY-PATH ---')
   const stateMachine = new OrderStateMananger()
@@ -9,7 +11,7 @@ const runHappyPath = () => {
   stateMachine.goTo(Event.OrderOutRegisterUpdated)
   stateMachine.goTo(Event.OrderShipmentDelivered)
 
-  console.log(`CurrentEvent: ${stateMachine.currentEvent()} | CurrentState: ${stateMachine.getStatus()}`)
+  write(stateMachine)
   console.log('--- END HAPPY-PATH ---\n')
 }
 
@@ -18,7 +20,7 @@ const runErrorPaymentExpired = () => {
   const stateMachine = new OrderStateMananger()
   stateMachine.goTo(Event.OrderPaymentExpired)
 
-  console.log(`CurrentEvent: ${stateMachine.currentEvent()} | CurrentState: ${stateMachine.getStatus()}`)
+  write(stateMachine)
   console.log('--- END ERROR-ON-PAYMENT-EXPIRED ---\n')
 }
 
@@ -27,7 +29,7 @@ const runErrorPaymentRejected = () => {
   const stateMachine = new OrderStateMananger()
   stateMachine.goTo(Event.OrderPaymentRejected)
 
-  console.log(`CurrentEvent: ${stateMachine.currentEvent()} | CurrentState: ${stateMachine.getStatus()}`)
+  write(stateMachine)
   console.log('--- END ERROR-ON-PAYMENT-REJECTED ---\n')
 }
 
