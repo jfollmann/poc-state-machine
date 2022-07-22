@@ -7,7 +7,7 @@ const makeStateManager = (initState?: OrderOutEvent): StateManager<OrderOutEvent
   return new TypeStateManager('OrderOutStateMachine', initState || OrderOutEvent.OrderOutCreated)
 }
 
-export const makeOrderOutStateManager = (initState?: OrderOutEvent): ChangeOrderOutState => {
+export const makeChangeOrderOutState = (initState?: OrderOutEvent): ChangeOrderOutState => {
   const stateManager = makeStateManager(initState)
   const repo = makeOrderOutRepository()
   return new ChangeOrderOutState(stateManager, repo)

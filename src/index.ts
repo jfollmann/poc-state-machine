@@ -1,9 +1,9 @@
-import { makeOrderOutStateManager } from './main/factories/states'
+import { makeChangeOrderOutState } from './main/factories/states'
 import { OrderOutEvent } from './domain/entities'
 
 const runHappyPath = async () => {
   console.log('--- START HAPPY-PATH ---')
-  const stateMachine = makeOrderOutStateManager()
+  const stateMachine = makeChangeOrderOutState()
   await stateMachine.handler(OrderOutEvent.OrderPaymentApproved)
   await stateMachine.handler(OrderOutEvent.OrderOutRegisterCreated)
   await stateMachine.handler(OrderOutEvent.OrderShipped)
@@ -15,7 +15,7 @@ const runHappyPath = async () => {
 
 const runRedeliveryPath = async () => {
   console.log('--- START REDELIVERY-PATH ---')
-  const stateMachine = makeOrderOutStateManager(OrderOutEvent.OrderOutRegisterCreated)
+  const stateMachine = makeChangeOrderOutState(OrderOutEvent.OrderOutRegisterCreated)
   await stateMachine.handler(OrderOutEvent.OrderShipped)
   await stateMachine.handler(OrderOutEvent.OrderOutRegisterUpdated)
   await stateMachine.handler(OrderOutEvent.OrderShipmentDelivered)
@@ -26,7 +26,7 @@ const runRedeliveryPath = async () => {
 const runInvalidTransition = async () => {
   console.log('--- START INVALID-TRANSITION-PATH ---')
   try {
-    const stateMachine = makeOrderOutStateManager(OrderOutEvent.OrderOutCreated)
+    const stateMachine = makeChangeOrderOutState(OrderOutEvent.OrderOutCreated)
     await stateMachine.handler(OrderOutEvent.OrderShipmentDelivered)
   } catch (error: any) {
     console.log(error.message)

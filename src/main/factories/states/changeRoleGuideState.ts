@@ -6,7 +6,7 @@ const makeStateManager = (initState?: RoleGuideEvent): StateManager<RoleGuideEve
   return new TypeStateManager('RoleGuideStateMachine', initState || RoleGuideEvent.Junior)
 }
 
-export const makeRoleGuideStateManager = (initState?: RoleGuideEvent): ChangeRoleGuideState => {
+export const changeRoleGuideState = (initState?: RoleGuideEvent): ChangeRoleGuideState => {
   const stateManager = makeStateManager(initState)
   return new ChangeRoleGuideState(stateManager)
 }
