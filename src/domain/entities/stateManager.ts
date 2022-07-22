@@ -8,6 +8,4 @@ export interface StateManager<T> {
   canGo(state: T): boolean
   getCurrentState(): T
   setup(config: SetupStates<T>[], concretType: any): void
-  // onStateChanged(to: T, from: T): void
-  // onInvalidTransition(handler: (to: T, from: T) => void): void
 }

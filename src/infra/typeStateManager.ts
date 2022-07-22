@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { TypeState } from 'typestate'
 import { SetupStates, StateManager } from '../domain/entities'
 
@@ -33,7 +32,6 @@ export class TypeStateManager<T> implements StateManager<T> {
     config.forEach(({ from, to }) => {
       this.stateMachine.from(from).to(...to)
     })
-
     Object.keys(concretType).forEach(item => {
       const state = concretType[item]
       this.stateMachine.on(state, (fromEvent) => {

@@ -1,4 +1,4 @@
-import { makeOrderOutStateManager } from './main/factories'
+import { makeOrderOutStateManager } from './main/factories/states'
 import { OrderOutEvent } from './domain/entities'
 
 const runHappyPath = async () => {
@@ -35,10 +35,9 @@ const runInvalidTransition = async () => {
   console.log('--- END INVALID-TRANSITION-PATH ---\n')
 }
 
-const run = async () => {
+const runOrderTests = async () => {
   await runHappyPath()
   await runRedeliveryPath()
   await runInvalidTransition()
 }
-
-run()
+runOrderTests()

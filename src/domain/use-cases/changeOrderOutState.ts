@@ -1,8 +1,12 @@
 import { SaveOrderStatus } from '../repo'
-import { OrderOutEvent, OrderOutStatus } from './orderOut'
-import { SetupStates, StateManager } from './stateManager'
+import { OrderOutEvent, OrderOutStatus } from '../entities/orderOut'
+import { SetupStates, StateManager } from '../entities/stateManager'
 
-export class OrderOutStateManager {
+interface OrderStateHandler {
+  handler: (state: OrderOutEvent) => Promise<void>
+}
+
+export class ChangeOrderOutState implements OrderStateHandler {
   private readonly states: SetupStates<OrderOutEvent>[] = [
     { from: OrderOutEvent.OrderOutCreated, to: [OrderOutEvent.OrderPaymentApproved, OrderOutEvent.OrderPaymentRejected, OrderOutEvent.OrderPaymentExpired] },
     { from: OrderOutEvent.OrderPaymentApproved, to: [OrderOutEvent.OrderOutRegisterCreated, OrderOutEvent.OrderOutRegisterRejected] },
@@ -18,14 +22,12 @@ export class OrderOutStateManager {
     this.stateManager.setup(this.states, OrderOutEvent)
   }
 
-  getStatus = (): OrderOutStatus => {
+  private getStatus = (): OrderOutStatus => {
     const currentState = this.stateManager.getCurrentState()
-
     if (currentState === OrderOutEvent.OrderOutCreated) return OrderOutStatus.OrderOutWaitingPayment
     if ([OrderOutEvent.OrderPaymentRejected, OrderOutEvent.OrderPaymentExpired, OrderOutEvent.OrderShippedRejected].includes(currentState)) return OrderOutStatus.OrderOutCanceled
     if (currentState === OrderOutEvent.OrderShipmentCancelled) return OrderOutStatus.OrderOutReturnedAvailable
     if (currentState === OrderOutEvent.OrderShipmentDelivered) return OrderOutStatus.OrderOutCompleted
-
     return OrderOutStatus.OrderOutSending
     // if ([OrderEvents.OrderPaymentApproved, OrderEvents.OrderOutRegisterCreated, OrderEvents.OrderOutRegisterRejected, OrderEvents.OrderShipped, OrderEvents.OrderOutRegisterUpdated, OrderEvents.OrderOutRegisterUpdatedFailled].includes(currentState)) return OrderStates.OrderOutSending
   }
@@ -36,7 +38,6 @@ export class OrderOutStateManager {
       const from = this.stateManager.getCurrentState()
       throw new Error(`Invalid transition from ${from} to ${state}`)
     }
-
     await this.repo.saveStatus({ id: 1, event: state, status: this.getStatus() })
   }
 }
