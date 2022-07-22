@@ -11,7 +11,7 @@ export class TypeStateManager<T> implements StateManager<T> {
     this.stateMachine = new TypeState.FiniteStateMachine<T>(initState, false)
   }
 
-  go (state: T): boolean {
+  goToState (state: T): boolean {
     const canGo = this.stateMachine.canGo(state)
     if (canGo) {
       this.stateMachine.go(state)
@@ -20,7 +20,7 @@ export class TypeStateManager<T> implements StateManager<T> {
     return canGo && this.stateMachine.currentState === state
   }
 
-  canGo (state: T): boolean {
+  canGoToState (state: T): boolean {
     return this.stateMachine.canGo(state)
   }
 

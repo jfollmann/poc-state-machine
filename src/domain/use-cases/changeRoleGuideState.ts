@@ -17,7 +17,7 @@ export class ChangeRoleGuideState implements RoleGuideHandler {
   }
 
   handler = (state: RoleGuideEvent) => {
-    const result = this.stateManager.go(state)
+    const result = this.stateManager.goToState(state)
     if (!result) {
       const from = this.stateManager.getCurrentState()
       throw new Error(`Invalid transition from ${from} to ${state}`)

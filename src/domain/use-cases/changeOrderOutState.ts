@@ -33,7 +33,7 @@ export class ChangeOrderOutState implements OrderStateHandler {
   }
 
   handler = async (state: OrderOutEvent) => {
-    const result = this.stateManager.go(state)
+    const result = this.stateManager.goToState(state)
     if (!result) {
       const from = this.stateManager.getCurrentState()
       throw new Error(`Invalid transition from ${from} to ${state}`)
