@@ -43,6 +43,8 @@ const runOrderTests = async () => {
 }
 
 const runRoleGuideTestes = async () => {
+  console.log('--- START ROLE-GUIDE-PATH ---')
+
   const stateMachine = makeChangeRoleGuideState()
   stateMachine.handler(RoleGuideEvent.Pleno)
   stateMachine.handler(RoleGuideEvent.Senior)
@@ -52,6 +54,8 @@ const runRoleGuideTestes = async () => {
   stateMachine.handler(RoleGuideEvent.Head)
   stateMachine.handler(RoleGuideEvent.Diretor)
   stateMachine.handler(RoleGuideEvent.CTO)
+
+  console.log('--- END ROLE-GUIDE-PATH ---\n')
 }
 
 const runApp = async () => {
