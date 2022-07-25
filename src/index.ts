@@ -1,8 +1,5 @@
-import { makeChangeOrderOutState } from './main/factories/states'
-import { OrderOutEvent } from './domain/entities'
-
-// import { RoleGuideEvent } from './domain/entities'
-// import { makeChangeRoleGuideState } from './main/factories/states'
+import { makeChangeOrderOutState, makeChangeRoleGuideState } from './main/factories/states'
+import { OrderOutEvent, RoleGuideEvent } from './domain/entities'
 
 const runHappyPath = async () => {
   console.log('--- START HAPPY-PATH ---')
@@ -43,13 +40,22 @@ const runOrderTests = async () => {
   await runRedeliveryPath()
   await runInvalidTransition()
 }
-runOrderTests()
 
-// const runRoleGuideTestes = async () => {
-//   const stateMachine = makeChangeRoleGuideState()
-//   stateMachine.handler(RoleGuideEvent.Pleno)
-//   stateMachine.handler(RoleGuideEvent.Senior)
-//   stateMachine.handler(RoleGuideEvent.Especialista)
-// }
+const runRoleGuideTestes = async () => {
+  const stateMachine = makeChangeRoleGuideState()
+  stateMachine.handler(RoleGuideEvent.Pleno)
+  stateMachine.handler(RoleGuideEvent.Senior)
+  stateMachine.handler(RoleGuideEvent.Especialista)
+  stateMachine.handler(RoleGuideEvent.Principal)
+  stateMachine.handler(RoleGuideEvent.Manager)
+  stateMachine.handler(RoleGuideEvent.Head)
+  stateMachine.handler(RoleGuideEvent.Diretor)
+  stateMachine.handler(RoleGuideEvent.CTO)
+}
 
-// runRoleGuideTestes()
+const runApp = async () => {
+  await runOrderTests()
+  await runRoleGuideTestes()
+}
+
+runApp()
