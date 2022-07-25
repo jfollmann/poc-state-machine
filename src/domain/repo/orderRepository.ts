@@ -1,4 +1,4 @@
-import { OrderOutEvent, OrderOutStatus } from '../entities'
+import { OrderOutEvent, OrderOutStatus } from '@/domain/entities'
 
 export interface SaveOrderStatus {
   saveStatus: (input: SaveOrderStatus.Input) => Promise<SaveOrderStatus.Output>

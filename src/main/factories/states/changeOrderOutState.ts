@@ -1,7 +1,7 @@
-import { OrderOutEvent, StateManager } from '../../../domain/entities'
-import { ChangeOrderOutState } from '../../../domain/use-cases'
-import { TypeStateManager } from '../../../infra'
-import { makeOrderOutRepository } from '../repo/orderOutRepo'
+import { OrderOutEvent, StateManager } from '@/domain/entities'
+import { ChangeOrderOutState } from '@/domain/use-cases'
+import { TypeStateManager } from '@/infra'
+import { makeOrderOutRepository } from '@/main/factories/repo'
 
 const makeStateManager = (initState?: OrderOutEvent): StateManager<OrderOutEvent> => {
   return new TypeStateManager('OrderOutStateMachine', initState || OrderOutEvent.OrderOutCreated)

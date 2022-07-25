@@ -1,5 +1,6 @@
-import { makeChangeOrderOutState, makeChangeRoleGuideState } from './main/factories/states'
-import { OrderOutEvent, RoleGuideEvent } from './domain/entities'
+import './main/config/moduleAlias'
+import { makeChangeOrderOutState, makeChangeRoleGuideState } from '@/main/factories/states'
+import { OrderOutEvent, RoleGuideEvent } from '@/domain/entities'
 
 const runHappyPath = async () => {
   console.log('--- START HAPPY-PATH ---')

@@ -1,5 +1,5 @@
-import { RoleGuideEvent } from '../entities/roleGuide'
-import { SetupStates, StateManager } from '../entities/stateManager'
+import { RoleGuideEvent } from '@/domain/entities/roleGuide'
+import { SetupStates, StateManager } from '@/domain/entities/stateManager'
 
 interface RoleGuideHandler {
   handler: (state: RoleGuideEvent) => void

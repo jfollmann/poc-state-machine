@@ -1,6 +1,6 @@
-import { SaveOrderStatus } from '../repo'
-import { OrderOutEvent, OrderOutStatus } from '../entities/orderOut'
-import { SetupStates, StateManager } from '../entities/stateManager'
+import { SaveOrderStatus } from '@/domain/repo'
+import { OrderOutEvent, OrderOutStatus } from '@/domain/entities/orderOut'
+import { SetupStates, StateManager } from '@/domain/entities/stateManager'
 
 interface OrderStateHandler {
   handler: (state: OrderOutEvent) => Promise<void>

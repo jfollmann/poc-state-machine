@@ -1,5 +1,5 @@
 import { TypeState } from 'typestate'
-import { SetupStates, StateManager } from '../domain/entities'
+import { SetupStates, StateManager } from '@/domain/entities'
 
 export class TypeStateManager<T> implements StateManager<T> {
   private stateMachine: TypeState.FiniteStateMachine<T>

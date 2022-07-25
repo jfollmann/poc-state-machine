@@ -1,4 +1,4 @@
-import { SaveOrderStatus } from '../../domain/repo'
+import { SaveOrderStatus } from '@/domain/repo'
 
 export class InMemorySaveStatusOrderRepository implements SaveOrderStatus {
   saveStatus (input: SaveOrderStatus.Input): Promise<boolean> {

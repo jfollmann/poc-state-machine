@@ -1,3 +1,3 @@
-import { InMemorySaveStatusOrderRepository } from '../../../infra/repo'
+import { InMemorySaveStatusOrderRepository } from '@/infra/repo'
 
 export const makeOrderOutRepository = (): InMemorySaveStatusOrderRepository => new InMemorySaveStatusOrderRepository()
